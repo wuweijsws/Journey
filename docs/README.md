@@ -19,7 +19,7 @@
 
 <div align="center">
 
-[个人博客](https://wuweiblogs.com)
+[个人博客](https://www.wuweiblogs.com)
 
 [Twitter](https://twitter.com/wuwei95672125)
 
