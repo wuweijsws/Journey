@@ -5,7 +5,7 @@
 <br>
 
 
-`Journey`：`Java` 征程。
+`Journey`：征程。
 
 <br/>
 
@@ -19,7 +19,7 @@
 
 <div align="center">
 
-[个人博客](https://wuweiblogs.top)
+[个人博客](https://wuweiblogs.com)
 
 [Twitter](https://twitter.com/wuwei95672125)
 
