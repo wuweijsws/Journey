@@ -27,6 +27,7 @@
 
   - [java开发规范](standard/java-standard.md)
   - [阿里云redis开发规范](standard/ali-redis-standard.md)
+  - [MySQL开发规范](standard/MySQL-standard.md)
 
 - 杂谈
 
