@@ -22,6 +22,11 @@
   - [Git入门](git/git-introduction.md)
   - [Git Flow](git/git-flow.md)
   - [客户端工具推荐](git/git-client.md)
+  
+- 开发规范
+
+  - [java开发规范](standard/java-standard.md)
+  - [阿里云redis开发规范](standard/ali-redis-standard.md)
 
 - 杂谈
 
