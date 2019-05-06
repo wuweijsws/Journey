@@ -1,5 +1,5 @@
-#键值设计
-##key名设计
+# 键值设计
+# key名设计
 (1)【建议】: 可读性和可管理性
 以业务名(或数据库名)为前缀(防止key冲突)，用冒号分隔，比如业务名:表名:id
 
@@ -14,7 +14,7 @@ ugc:video:1
 
 详细解析
 
-##value设计
+# value设计
 (1)【强制】：拒绝bigkey(防止网卡流量、慢查询)
 string类型控制在10KB以内，hash、list、set、zset元素个数不要超过5000。
 
@@ -40,7 +40,7 @@ set user:1:favor football
 3.【推荐】：控制key的生命周期，redis不是垃圾桶。
 建议使用expire设置过期时间(条件允许可以打散过期时间，防止集中过期)，不过期的数据重点关注`idletime`。
 
-#命令使用
+# 命令使用
 
 - 【推荐】O(N)命令关注N的数量
 例如hgetall、lrange、smembers、zrange、sinter等并非不能使用，但是需要明确N的值。有遍历的需求可以使用hscan、sscan、zscan代替。
@@ -69,7 +69,7 @@ Redis的事务功能较弱(不支持回滚)，而且集群版本(自研和官方
 2.所有key，必须在1个slot上，否则直接返回error, "-ERR eval/evalsha command keys must in same slot"
 7.【建议】必要情况下使用monitor命令时，要注意不要长时间使用。
 
-#客户端使用
+# 客户端使用
 1.【推荐】
 避免多个应用使用一个Redis实例
 
