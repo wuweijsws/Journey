@@ -26,6 +26,9 @@
   - [Git Flow](git/git-flow.md)
   - [客户端工具推荐](git/git-client.md)
   
+- 常用软件安装文档
+  - [Jenkins](software/jenkins.md)
+  
 - 开发规范
 
   - [java开发规范](standard/java-standard.md)
