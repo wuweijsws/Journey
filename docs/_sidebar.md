@@ -21,8 +21,8 @@
   - [LettuceRedis](code/LettuceRedis.md)
 
 - Git
-
-  - [Git入门](git/git-introduction.md)
+  - [Git常用命令](git/git-introduction.md)
+  - [GitLab安装文档](git/gitlab安装文档.md)
   - [Git Flow](git/git-flow.md)
   - [客户端工具推荐](git/git-client.md)
   
