@@ -1,4 +1,4 @@
-```
+```java
 package com.kaishustory.lettuce.conf;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -79,7 +79,7 @@ public class LettuceRedisConf extends CachingConfigurerSupport {
      * @return RedisConnectionFactory
      */
     @Bean
-    public RedisConnectionFactory connectionFactory() {
+    private RedisConnectionFactory connectionFactory() {
 
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(hostName);
@@ -95,7 +95,7 @@ public class LettuceRedisConf extends CachingConfigurerSupport {
      * @return LettucePoolingClientConfiguration
      */
     @Bean
-    public LettucePoolingClientConfiguration poolConfig() {
+    private LettucePoolingClientConfiguration poolConfig() {
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
         poolConfig.setMaxTotal(maxActive);
         poolConfig.setMaxWaitMillis(maxWaitMillis);
