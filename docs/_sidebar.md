@@ -17,6 +17,7 @@
   - [MySQL开发规范](standard/MySQL-standard.md)
   - [MySQL新增字段会锁表？](mysql/MySQL_1.md)
 
-- 杂谈
+- web
+  - [web跨域原理及解决方案](web/跨域解决.md)
 
 - [联系作者](contactme.md)
