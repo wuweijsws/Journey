@@ -1,33 +1,15 @@
-- java.util.concurrent
-  - [CAS]()
-  - [Lock]()
-  - [AQS]()
-  - [ConcurrentHashMap]()
-  - [ConutDownLatch]()
-  - [ReentrantLock]()
-  - [ReentrantReadWriterLock]()
-  
+- Java
+  - [线程池扫盲](java/线程池扫盲.md)
+
 - 线上监控
-
-  - [Sentry]()
-  - [pingpoint]()
-  - [skywalking]()
-
-- 设计模式&应用
-  - [责任链模式]()
-  - [其他模式]()
+  - [Memory Analyzer]()
   
 - code
   - [LettuceRedis](code/LettuceRedis.md)
 
 - Git
-  - [Git常用命令](git/git-introduction.md)
   - [GitLab安装文档](git/gitlab安装文档.md)
   - [Git Flow](git/git-flow.md)
-  - [客户端工具推荐](git/git-client.md)
-  
-- 常用软件安装文档
-  - [Jenkins](software/jenkins.md)
   
 - 开发规范
 
@@ -37,9 +19,5 @@
 
 - 杂谈
 
-  - [推荐一款MAC下的markDown编辑器](talk-about/markdown-vim-recom.md)
-
-  - [创建博客](talk-about/blog-road.md)
-  
 
 - [联系作者](contactme.md)
