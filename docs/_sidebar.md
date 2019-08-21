@@ -2,7 +2,7 @@
   - [线程池扫盲](java/线程池扫盲.md)
 
 - 线上监控
-  - [Memory Analyzer]()
+  - [Sentry安装](software/sentry安装.md)
   
 - code
   - [LettuceRedis](code/LettuceRedis.md)
