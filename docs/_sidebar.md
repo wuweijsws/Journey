@@ -6,8 +6,9 @@
   - [Sentry安装](software/sentry安装.md)
   
 - redis
-  - [LettuceRedis](code/LettuceRedis.md)
-  - [阿里云redis开发规范](standard/ali-redis-standard.md)
+  - [redis安装](redis/Redis安装.md)
+  - [LettuceRedis](redis/LettuceRedis.md)
+  - [阿里云redis开发规范](redis/ali-redis-standard.md)
 
 - Git
   - [GitLab安装文档](git/gitlab安装文档.md)
