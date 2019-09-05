@@ -4,6 +4,7 @@
 
 - 线上监控
   - [Sentry安装](software/sentry安装.md)
+  - [SpringBoot集成Sentry](software/springboot集成sentry.md)
   
 - redis
   - [redis安装](redis/Redis安装.md)
