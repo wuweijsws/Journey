@@ -1,22 +1,22 @@
 # SpringBoot集成Sentry
 
-> 上文讲了linux系统下sentry安装的步骤,传送门：[Sentry安装](sentry安装.md)
+> 上文讲了linux系统下sentry安装的步骤,传送门：[Sentry安装](../sentry安装.md)
 > 本文讲述`Sentry`的使用以及在`SpringBoot`项目中集成`Sentry`的正确姿势
 
 ## 1.在Sentry中创建好项目
-创建一个项目test-java-service
+创建一个项目test-java-service  
 ![](sentry-use/new_project.png)
 
-进入项目主页点击设置：
+进入项目主页点击设置：  
 ![](sentry-use/project_home.png)
 
-进入设置页面直接点击<br>客户端密钥(DSN)</br>,可以看到为我们生成了一个默认的客户端密钥
+进入设置页面直接点击`客户端密钥(DSN)`,可以看到为我们生成了一个默认的客户端密钥  
 ![](sentry-use/DSN_KEY.png)
 
-点击`配置`按钮进入密钥详情页，获取到公钥、私钥以及项目的Id：
+点击`配置`按钮进入密钥详情页，获取到公钥、私钥以及项目的Id：  
 ![](sentry-use/key_detail.png)
 
-这样我们就可以根据配置规则获取到这个项目的DSN地址，配置规则：
+这样我们就可以根据配置规则获取到这个项目的DSN地址，配置规则：  
 ```
 #配置规则：协议://公钥:私钥@你安装的sentry访问地址/项目Id
 dsn = 'http://public:secret@example.com/project-id'
