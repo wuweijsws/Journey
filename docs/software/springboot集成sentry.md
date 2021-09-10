@@ -1,6 +1,6 @@
 # SpringBoot集成Sentry
 
-> 上文讲了linux系统下sentry安装的步骤,传送门：[Sentry安装](../sentry安装.md)
+> 上文讲了linux系统下sentry安装的步骤,传送门：[Sentry安装](software/sentry安装.md)
 > 本文讲述`Sentry`的使用以及在`SpringBoot`项目中集成`Sentry`的正确姿势
 
 ## 1.在Sentry中创建好项目

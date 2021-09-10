@@ -1,0 +1,169 @@
+<html>
+<head>
+<title>RpcFramework.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #629755; font-style: italic;}
+.s3 { color: #629755; font-weight: bold; font-style: italic;}
+.s4 { color: #808080;}
+.s5 { color: #6a8759;}
+.s6 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RpcFramework.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.journey.dubbo.rpc</span><span class="s0">;</span>
+
+import <span class="s1">java.io.IOException</span><span class="s0">;</span>
+import <span class="s1">java.io.ObjectInputStream</span><span class="s0">;</span>
+import <span class="s1">java.io.ObjectOutputStream</span><span class="s0">;</span>
+import <span class="s1">java.lang.reflect.Method</span><span class="s0">;</span>
+import <span class="s1">java.lang.reflect.Proxy</span><span class="s0">;</span>
+import <span class="s1">java.net.ServerSocket</span><span class="s0">;</span>
+import <span class="s1">java.net.Socket</span><span class="s0">;</span>
+
+<span class="s2">/**</span>
+ * RPC Framework
+ * <span class="s3">@Author: </span><span class="s2">wuwei</span>
+ * <span class="s3">@Date: </span><span class="s2">2019-09-22 23:05</span>
+ */
+<span class="s0">public class </span><span class="s1">RpcFramework </span><span class="s0">implements </span><span class="s1">Rpc {</span>
+
+    <span class="s2">/**</span>
+     * 暴露服务
+     * <span class="s3">@param </span><span class="s2">service 服务</span>
+     * <span class="s3">@param </span><span class="s2">port 端口</span>
+     */
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">export(</span><span class="s0">final </span><span class="s1">Object service</span><span class="s0">, int </span><span class="s1">port) </span><span class="s0">throws </span><span class="s1">IOException {</span>
+
+        <span class="s4">//如果服务是空，直接抛出异常</span>
+        <span class="s0">if </span><span class="s1">(service == </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s0">throw new </span><span class="s1">IllegalArgumentException(</span><span class="s5">&quot;service is null&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s4">//端口号必须在0~65535范围内</span>
+        <span class="s0">if </span><span class="s1">(port &lt;= </span><span class="s6">0 </span><span class="s1">|| port &gt; </span><span class="s6">65535</span><span class="s1">) {</span>
+            <span class="s0">throw new </span><span class="s1">IllegalArgumentException(</span><span class="s5">&quot;port is invalid, port=&quot; </span><span class="s1">+ port)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        System.out.println(<span class="s5">&quot;Export service&quot; </span><span class="s1">+ service.getClass().getName() + </span><span class="s5">&quot; on port:&quot; </span><span class="s1">+ port)</span><span class="s0">;</span>
+        <span class="s1">ServerSocket serverSocket = </span><span class="s0">new </span><span class="s1">ServerSocket(port)</span><span class="s0">;</span>
+        <span class="s4">//一直监听</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">;;</span><span class="s1">) {</span>
+            <span class="s0">try </span><span class="s1">{</span>
+                <span class="s0">final </span><span class="s1">Socket socket = serverSocket.accept()</span><span class="s0">;</span>
+                new <span class="s1">Thread(() -&gt; {</span>
+                            <span class="s0">try </span><span class="s1">{</span>
+                                <span class="s0">try </span><span class="s1">{</span>
+                                    ObjectInputStream inputStream = <span class="s0">new </span><span class="s1">ObjectInputStream(socket.getInputStream())</span><span class="s0">;</span>
+                                    try <span class="s1">{</span>
+
+                                        String methodName = inputStream.readUTF()<span class="s0">;</span>
+                                        <span class="s1">Class&lt;?&gt;[] parameterTypes = (Class&lt;?&gt;[]) inputStream.readObject()</span><span class="s0">;</span>
+                                        <span class="s1">Object[] arguments = (Object[]) inputStream.readObject()</span><span class="s0">;</span>
+
+                                        <span class="s1">ObjectOutputStream outputStream = </span><span class="s0">new </span><span class="s1">ObjectOutputStream(socket.getOutputStream())</span><span class="s0">;</span>
+                                        try <span class="s1">{</span>
+                                            Method method = service.getClass().getMethod(methodName<span class="s0">, </span><span class="s1">parameterTypes)</span><span class="s0">;</span>
+                                            <span class="s1">Object result = method.invoke(service</span><span class="s0">, </span><span class="s1">arguments)</span><span class="s0">;</span>
+                                            <span class="s1">outputStream.writeObject(result)</span><span class="s0">;</span>
+
+                                        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(Throwable t) {</span>
+                                            outputStream.writeObject(t)<span class="s0">;</span>
+                                        <span class="s1">} </span><span class="s0">finally </span><span class="s1">{</span>
+                                            outputStream.close()<span class="s0">;</span>
+                                        <span class="s1">}</span>
+
+                                    } <span class="s0">finally </span><span class="s1">{</span>
+                                        inputStream.close()<span class="s0">;</span>
+                                    <span class="s1">}</span>
+                                } <span class="s0">finally </span><span class="s1">{</span>
+                                    socket.close()<span class="s0">;</span>
+                                <span class="s1">}</span>
+                            } <span class="s0">catch </span><span class="s1">(Exception e) {</span>
+                                e.printStackTrace()<span class="s0">;</span>
+                            <span class="s1">}</span>
+                        }
+                ).start()<span class="s0">;</span>
+
+            <span class="s1">} </span><span class="s0">catch </span><span class="s1">(Exception e) {</span>
+                e.printStackTrace()<span class="s0">;</span>
+            <span class="s1">}</span>
+        }
+    }
+
+    <span class="s2">/**</span>
+     * 引用服务
+     * <span class="s3">@param </span><span class="s2">interfaceClass 接口类</span>
+     * <span class="s3">@param </span><span class="s2">host 地址</span>
+     * <span class="s3">@param </span><span class="s2">port 端口</span>
+     * <span class="s3">@param </span><span class="s1">&lt;</span><span class="s2">T</span><span class="s1">&gt; </span><span class="s2">接口泛型</span>
+     * <span class="s3">@return </span><span class="s2">远程服务</span>
+     */
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">&lt;T&gt; T refer(</span><span class="s0">final </span><span class="s1">Class&lt;T&gt; interfaceClass</span><span class="s0">, final </span><span class="s1">String host</span><span class="s0">, final int </span><span class="s1">port) {</span>
+        <span class="s0">if </span><span class="s1">(interfaceClass == </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s0">throw new </span><span class="s1">IllegalArgumentException(</span><span class="s5">&quot;Interface class == null&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if </span><span class="s1">(!interfaceClass.isInterface()) {</span>
+            <span class="s0">throw new </span><span class="s1">IllegalArgumentException(</span><span class="s5">&quot;the &quot; </span><span class="s1">+ interfaceClass.getName() + </span><span class="s5">&quot;must be interface class&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if </span><span class="s1">(host == </span><span class="s0">null </span><span class="s1">|| host.length() == </span><span class="s6">0</span><span class="s1">) {</span>
+            <span class="s0">throw new </span><span class="s1">IllegalArgumentException(</span><span class="s5">&quot;Host == null&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if </span><span class="s1">(port &lt;= </span><span class="s6">0 </span><span class="s1">|| port &gt; </span><span class="s6">65535</span><span class="s1">) {</span>
+            <span class="s0">throw new </span><span class="s1">IllegalArgumentException(</span><span class="s5">&quot;Invalid port:&quot; </span><span class="s1">+port)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        System.out.println(<span class="s5">&quot;GET remote service&quot; </span><span class="s1">+ interfaceClass.getName() + </span><span class="s5">&quot;from server &quot; </span><span class="s1">+ host + </span><span class="s5">&quot;:&quot; </span><span class="s1">+ port)</span><span class="s0">;</span>
+
+        return <span class="s1">(T) Proxy.newProxyInstance(</span>
+                interfaceClass.getClassLoader()<span class="s0">,</span>
+                new <span class="s1">Class[]{interfaceClass}</span><span class="s0">,</span>
+                <span class="s1">(proxy</span><span class="s0">, </span><span class="s1">method</span><span class="s0">, </span><span class="s1">args) -&gt; {</span>
+                    Socket socket = <span class="s0">new </span><span class="s1">Socket(host</span><span class="s0">, </span><span class="s1">port)</span><span class="s0">;</span>
+                    try <span class="s1">{</span>
+                        ObjectOutputStream outputStream = <span class="s0">new </span><span class="s1">ObjectOutputStream(socket.getOutputStream())</span><span class="s0">;</span>
+                        try <span class="s1">{</span>
+
+                            outputStream.writeUTF(method.getName())<span class="s0">;</span>
+                            <span class="s1">outputStream.writeObject(method.getParameterTypes())</span><span class="s0">;</span>
+                            <span class="s1">outputStream.writeObject(args)</span><span class="s0">;</span>
+
+                            <span class="s1">ObjectInputStream inputStream = </span><span class="s0">new </span><span class="s1">ObjectInputStream(socket.getInputStream())</span><span class="s0">;</span>
+                            try <span class="s1">{</span>
+                                Object result = inputStream.readObject()<span class="s0">;</span>
+                                if <span class="s1">(result </span><span class="s0">instanceof </span><span class="s1">Throwable) {</span>
+                                    <span class="s0">throw  </span><span class="s1">(Throwable) result</span><span class="s0">;</span>
+                                <span class="s1">}</span>
+                                <span class="s0">return </span><span class="s1">result</span><span class="s0">;</span>
+                            <span class="s1">}</span><span class="s0">finally </span><span class="s1">{</span>
+                                inputStream.close()<span class="s0">;</span>
+                            <span class="s1">}</span>
+
+                        } <span class="s0">finally </span><span class="s1">{</span>
+                            outputStream.close()<span class="s0">;</span>
+                        <span class="s1">}</span>
+                    } <span class="s0">finally </span><span class="s1">{</span>
+                        socket.close()<span class="s0">;</span>
+                    <span class="s1">}</span>
+                }
+        )<span class="s0">;</span>
+
+    <span class="s1">}</span>
+}
+</pre>
+</body>
+<script type="text/javascript">
+
+</script>
+</html>
